@@ -8,34 +8,36 @@ The extension enables the proxy in the applicationhost.config file of your WebAp
 To help you create the rewrite rules I added 2 examples which also demonstrates the use cases for this extension.
 
 Example 1: Integrate an external site in your WebApp
-	<rewrite>
-	  <rules>
-	    <rule name="BlogProxy" stopProcessing="true">
-	      <match url="^blog/?(.*)" />
-	      <action type="Rewrite" url="http://eelco.azurewebsites.net/{R:1}" />
-	      <serverVariables>
-	        <set name="HTTP_ACCEPT_ENCODING" value="" />
-	      </serverVariables>
-	    </rule>
-	    <rule name="test" stopProcessing="true">
-	      <serverVariables>
-	        <set name="HTTP_ACCEPT_ENCODING" value="" />
-	      </serverVariables>
-	    </rule>
-	  </rules>
-	  <outboundRules>
-	    <rule name="RewriteRelativePaths" preCondition="ResponseIsHtml">
-	      <match filterByTags="A, Img" pattern="^/(.*)" />
-	      <action type="Rewrite" value="/blog/{R:1}" />
-	    </rule>
-	    <preConditions>
-	      <preCondition name="ResponseIsHtml">
-	        <add input="{RESPONSE_CONTENT_TYPE}" pattern="^text/html" />
-	      </preCondition>
-	    </preConditions>
-	  </outboundRules>
-	</rewrite>
 
+...
+<rewrite>
+  <rules>
+    <rule name="BlogProxy" stopProcessing="true">
+      <match url="^blog/?(.*)" />
+      <action type="Rewrite" url="http://eelco.azurewebsites.net/{R:1}" />
+      <serverVariables>
+        <set name="HTTP_ACCEPT_ENCODING" value="" />
+      </serverVariables>
+    </rule>
+    <rule name="test" stopProcessing="true">
+      <serverVariables>
+        <set name="HTTP_ACCEPT_ENCODING" value="" />
+      </serverVariables>
+    </rule>
+  </rules>
+  <outboundRules>
+    <rule name="RewriteRelativePaths" preCondition="ResponseIsHtml">
+      <match filterByTags="A, Img" pattern="^/(.*)" />
+      <action type="Rewrite" value="/blog/{R:1}" />
+    </rule>
+    <preConditions>
+      <preCondition name="ResponseIsHtml">
+        <add input="{RESPONSE_CONTENT_TYPE}" pattern="^text/html" />
+      </preCondition>
+    </preConditions>
+  </outboundRules>
+</rewrite>
+...
 
 Example 2: Use a blob storage account for your static content
 
