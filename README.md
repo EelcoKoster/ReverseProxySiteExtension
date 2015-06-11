@@ -8,6 +8,7 @@ The extension enables the proxy in the applicationhost.config file of your WebAp
 To help you create the rewrite rules I added 2 examples which also demonstrates the use cases for this extension.
 
 Example 1: Integrate an external site in your WebApp
+...
 	<rewrite>
 	  <rules>
 	    <rule name="BlogProxy" stopProcessing="true">
@@ -35,7 +36,7 @@ Example 1: Integrate an external site in your WebApp
 	    </preConditions>
 	  </outboundRules>
 	</rewrite>
-
+...
 
 Example 2: Use a blob storage account for your static content
 
