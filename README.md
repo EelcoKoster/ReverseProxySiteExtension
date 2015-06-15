@@ -18,10 +18,10 @@ To help you create the rewrite rules I added 3 examples which also demonstrates 
   </rules>
  </rewrite>
 ```
-This rule must be put in the web.config file within the <system.webServer> tag.
+This rule must be placed in the web.config file within the &lt;system.webServer&gt; tag.
 With this rule you create a virtual folder in your site, and the content will be pulled from the external site.
-The advantage of this rule is that the client will not be redirected and thinks the content is from your site.
-This comes in handy to overcome CORS problems with javascript files from different domains of if you would like to combine multiple sites under one domain.  
+The client will not be redirected and thinks the content is from your site.
+This comes in handy to overcome CORS problems with javascript files from different domains or if you would like to combine multiple sites under one domain.  
  
 ### Example 2: Use a blob storage account for your static content
 ```
@@ -83,4 +83,5 @@ With this feature you can but a terabyte of static content behind your WebApp an
 This example puts my weblog in the /blog/ folder of your WebApp :-) (it's just an example!)
 Next to the rule to forward all traffic in the blog folder to my site, I also but in an outbound rule to transform the output of my site. 
 The outbound rule will first check if the output file has the content type "text/html" and then will append a "/blog/" before all relative paths in the A and IMG htmltags.
-WARNING: for outbound rules to work you have to disable the output encoding of the site you're trying to proxy. In this example I do this by clearing the "HTTP_ACCEPT_ENCODING" header. This will have an impact on the performance and cost for outbound traffic.
+
+WARNING: For outbound rules to work you have to disable the output encoding of the site you're trying to proxy. In this example I do this by clearing the "HTTP_ACCEPT_ENCODING" header. This will have an impact on the performance and cost for outbound traffic.
