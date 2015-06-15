@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/EelcoKoster/ReverseProxySiteExtension</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This extension enables reverse proxy capabilities and helps creating rules</description>
-    <iconUrl>https://raw.githubusercontent.com/projectkudu/FileCounterMVC/master/FileCounter50x50.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/EelcoKoster/ReverseProxySiteExtension/master/ReverseProxy50x50.png</iconUrl>
     <tags>proxy reverse sample siteextension</tags>
   </metadata>
   <files>
