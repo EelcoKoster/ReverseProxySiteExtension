@@ -3,7 +3,7 @@
   <metadata>
     <id>reverseproxy</id>
     <title>ReverseProxy</title>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <authors>Eelco Koster</authors>
     <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
     <projectUrl>https://github.com/EelcoKoster/ReverseProxySiteExtension</projectUrl>

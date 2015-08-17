@@ -41,32 +41,46 @@
     }
       
     private void WriteRewriteRules(string rules){
-       string filePath = Path.Combine(folder,"Web.config");
-       XDocument xmlDoc;
-       using (StreamReader read = new FileInfo(filePath).OpenText()){
-          xmlDoc = XDocument.Load(read);
-       }
-       var rulesElement = xmlDoc.Descendants("rewrite").SingleOrDefault();
-       if (rulesElement != null){
-           //Refactor!!
-           rules = rules.Replace("<rewrite>","");
-           rules = rules.Replace("</rewrite>","");
-           rulesElement.ReplaceNodes(XElement.Parse(rules));
-           xmlDoc.Save(filePath);
-           return; 
-       }
-         
-       rulesElement = xmlDoc.Descendants("system.webServer").SingleOrDefault();
-       if (rulesElement != null){
-           rulesElement.Add(XElement.Parse(rules));
-           xmlDoc.Save(filePath);
-           return;
-       }
-              
-       rulesElement = xmlDoc.Descendants("configuration").SingleOrDefault(); 
-       rules = string.Format("<system.webServer>{0}</system.webServer>", rules);
-       rulesElement.Add(XElement.Parse(rules));
-       xmlDoc.Save(filePath);
+         string filePath = Path.Combine(folder, "Web.config");
+         XDocument xmlDoc;
+         using (StreamReader read = new FileInfo(filePath).OpenText())
+         {
+            xmlDoc = XDocument.Load(read);
+         }
+
+         //If web.config already has a rewrite element
+         var rulesElement = xmlDoc.Descendants("rewrite").SingleOrDefault();
+         if (rulesElement != null)
+         {
+            var newRulesDoc = XDocument.Parse(rules);
+            IEnumerable<XElement> newRules = from rule in newRulesDoc.Descendants("rules") select rule;
+            foreach (XElement rule in newRules)
+            {
+               rulesElement.ReplaceNodes(newRules);
+            }
+            IEnumerable<XElement> outboundRules = from rule in newRulesDoc.Descendants("outboundRules") select rule;
+            foreach (XElement rule in outboundRules)
+            {
+               rulesElement.Add(outboundRules);
+            }
+            xmlDoc.Save(filePath);
+            return;
+         }
+
+         //No rewrite element found, add it to system.webServer element
+         rulesElement = xmlDoc.Descendants("system.webServer").SingleOrDefault();
+         if (rulesElement != null)
+         {
+            rulesElement.Add(XElement.Parse(rules));
+            xmlDoc.Save(filePath);
+            return;
+         }
+
+         //No system.webServer element found, add it with rewrite element to configuration element
+         rulesElement = xmlDoc.Descendants("configuration").SingleOrDefault();
+         rules = string.Format("<system.webServer>{0}</system.webServer>", rules);
+         rulesElement.Add(XElement.Parse(rules));
+         xmlDoc.Save(filePath);
     }
 
     protected void Page_Load(object sender, EventArgs e) {  
@@ -103,7 +117,9 @@
         <br/>
         <a href="javascript:CreateExample();">Create Example</a>
         <form method="Post">
-            <textarea name="rulesBox" id="rulesBox" rows="25" cols="120"><%=rules %></textarea>
+            <textarea name="rulesBox" id="rulesBox" rows="25" cols="120">
+                <%=rules %>
+            </textarea>
             <br/>
             <input type="submit" value="Save to web.config">
         </form>
